@@ -14,6 +14,7 @@ function getNextStudent(){
       //get the next student
       if(toAsk.length == 0){
         //Take every kid out of beenAsked and put them in to_ask_pool
+        alert("Everyone's been asked!");
         for (let i = 0; i < beenAsked.length; i++){
           //get kid out of beenAsked
           STU_LIST_3.update({
@@ -47,6 +48,8 @@ function getNextStudent(){
         STU_LIST_3.update({
           curr_stu_puddle: firebase.firestore.FieldValue.arrayUnion(nextStudent)
         });
+
+        $("#nextStudent").hide();
 }
     }
     else{
@@ -101,7 +104,7 @@ function fileCorrect(){
       STU_LIST_3.update({
         curr_stu_puddle: firebase.firestore.FieldValue.arrayRemove(currStu)
       });
-
+      $("#nextStudent").show();
     }
     else{
       console.log("Sucks, no file dude.")

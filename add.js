@@ -11,6 +11,9 @@ function addStudent(){
   STU_LIST_3.update({
     to_ask_pool: firebase.firestore.FieldValue.arrayUnion(newStudent)
   });
+
+  $("#nameInput").val('');
+  $("#picSrcInput").val('');
 }
 
 $('#add').click(addStudent);
