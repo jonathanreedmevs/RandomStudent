@@ -86,6 +86,7 @@ function fileCorrect(){
       let currStu = doc.data().curr_stu_puddle[0];//get current student
       let scoreLst = currStu.score;//get their score structure
       scoreLst[0]++;//increment correct
+      scoreLst[2]++;//increment questions asked
       currStu.score = scoreLst;//reassign updated list
       let lst = []//push student
       console.log(currStu);
@@ -99,6 +100,71 @@ function fileCorrect(){
       //put into been_asked_pool
       STU_LIST_3.update({
         been_asked_pool: firebase.firestore.FieldValue.arrayUnion(currStu)
+      });
+
+      STU_LIST_3.update({
+        curr_stu_puddle: firebase.firestore.FieldValue.arrayRemove(currStu)
+      });
+      $("#nextStudent").show();
+    }
+    else{
+      console.log("Sucks, no file dude.")
+    }
+  })
+}
+
+function fileIncorrect(){
+  STU_LIST_3.get().then(function(doc){
+    if(doc.exists && doc.data().curr_stu_puddle.length == 1){
+      let currStu = doc.data().curr_stu_puddle[0];//get current student
+      let scoreLst = currStu.score;//get their score structure
+      scoreLst[3]++;//increment correct
+      currStu.score = scoreLst;//reassign updated list
+      let lst = []//push student
+      console.log(currStu);
+      lst.push(currStu);
+
+
+      STU_LIST_3.update({//update puddle in current list
+        "curr_stu_puddle": lst
+      });
+
+      //put into been_asked_pool
+      STU_LIST_3.update({
+        been_asked_pool: firebase.firestore.FieldValue.arrayUnion(currStu)
+      });
+
+      STU_LIST_3.update({
+        curr_stu_puddle: firebase.firestore.FieldValue.arrayRemove(currStu)
+      });
+      $("#nextStudent").show();
+    }
+    else{
+      console.log("Sucks, no file dude.")
+    }
+  })
+}
+
+function fileAbsent(){
+  STU_LIST_3.get().then(function(doc){
+    if(doc.exists && doc.data().curr_stu_puddle.length == 1){
+      let currStu = doc.data().curr_stu_puddle[0];//get current student
+      let scoreLst = currStu.score;//get their score structure
+      scoreLst[1]--;//increment absent
+      scoreLst[2]++;//increment questions asked
+      currStu.score = scoreLst;//reassign updated list
+      let lst = []//push student
+      console.log(currStu);
+      lst.push(currStu);
+
+
+      STU_LIST_3.update({//update puddle in current list
+        "curr_stu_puddle": lst
+      });
+
+      //put into to_ask_pool, because they will have to be asked again if they are absent
+      STU_LIST_3.update({
+        to_ask_pool: firebase.firestore.FieldValue.arrayUnion(currStu)
       });
 
       STU_LIST_3.update({
@@ -174,5 +240,7 @@ function resetScores(){
 What follows here is the binding of above functions to buttons on the page.
 */
 $('#correct').click(fileCorrect);
+$('#absent').click(fileAbsent);
 $('#reset').click(resetScores);
+$('#iwrong').click(fileIncorrect);
 $('#nextStudent').click(getNextStudent);
