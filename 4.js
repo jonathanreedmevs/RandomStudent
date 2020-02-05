@@ -2,11 +2,11 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
 
-const STU_LIST_3 = fire.collection("3A Students").doc("Student Lists");
+const STU_LIST_4 = fire.collection("4A Students").doc("Student Lists");
 const Q_GIF = "https://media.giphy.com/media/uHEqSttWHv476/giphy.gif";
 
 function getNextStudent(){
-  STU_LIST_3.get().then(function(doc) {//Asynchronous Javascript to Read from Database
+  STU_LIST_4.get().then(function(doc) {//Asynchronous Javascript to Read from Database
     if(doc.exists){
       //Get references to the list pools of who to call
       let beenAsked = doc.data().been_asked_pool;
@@ -17,11 +17,11 @@ function getNextStudent(){
         alert("Everyone's been asked!");
         for (let i = 0; i < beenAsked.length; i++){
           //get kid out of beenAsked
-          STU_LIST_3.update({
+          STU_LIST_4.update({
             been_asked_pool: firebase.firestore.FieldValue.arrayRemove(beenAsked[i])
           });
           //put same kid in to_ask
-          STU_LIST_3.update({
+          STU_LIST_4.update({
             to_ask_pool: firebase.firestore.FieldValue.arrayUnion(beenAsked[i])
           });
         }
@@ -37,15 +37,15 @@ function getNextStudent(){
         $("#stuName").html(name);
         $("#stuPic").attr("src", pic);
 
-        STU_LIST_3.update({
+        STU_LIST_4.update({
           to_ask_pool: firebase.firestore.FieldValue.arrayRemove(nextStudent)
         });
         //TEMPORARILY REMOVED AS THIS IS DONE IN THE OTHER FUNCTIONS
-        // STU_LIST_3.update({
+        // STU_LIST_4.update({
         //   been_asked_pool: firebase.firestore.FieldValue.arrayUnion(nextStudent)
         // });
 
-        STU_LIST_3.update({
+        STU_LIST_4.update({
           curr_stu_puddle: firebase.firestore.FieldValue.arrayUnion(nextStudent)
         });
 
@@ -81,7 +81,7 @@ file absent count and return to to_ask_pool
 Get student from the curr_stu_puddle and update numbers
 */
 function fileCorrect(){
-  STU_LIST_3.get().then(function(doc){
+  STU_LIST_4.get().then(function(doc){
     if(doc.exists && doc.data().curr_stu_puddle.length == 1){
       let currStu = doc.data().curr_stu_puddle[0];//get current student
       let scoreLst = currStu.score;//get their score structure
@@ -93,16 +93,16 @@ function fileCorrect(){
       lst.push(currStu);
 
 
-      STU_LIST_3.update({//update puddle in current list
+      STU_LIST_4.update({//update puddle in current list
         "curr_stu_puddle": lst
       });
 
       //put into been_asked_pool
-      STU_LIST_3.update({
+      STU_LIST_4.update({
         been_asked_pool: firebase.firestore.FieldValue.arrayUnion(currStu)
       });
 
-      STU_LIST_3.update({
+      STU_LIST_4.update({
         curr_stu_puddle: firebase.firestore.FieldValue.arrayRemove(currStu)
       });
 
@@ -117,7 +117,7 @@ function fileCorrect(){
 }
 
 function fileIncorrect(){
-  STU_LIST_3.get().then(function(doc){
+  STU_LIST_4.get().then(function(doc){
     if(doc.exists && doc.data().curr_stu_puddle.length == 1){
       let currStu = doc.data().curr_stu_puddle[0];//get current student
       let scoreLst = currStu.score;//get their score structure
@@ -129,16 +129,16 @@ function fileIncorrect(){
       lst.push(currStu);
 
 
-      STU_LIST_3.update({//update puddle in current list
+      STU_LIST_4.update({//update puddle in current list
         "curr_stu_puddle": lst
       });
 
       //put into been_asked_pool
-      STU_LIST_3.update({
+      STU_LIST_4.update({
         been_asked_pool: firebase.firestore.FieldValue.arrayUnion(currStu)
       });
 
-      STU_LIST_3.update({
+      STU_LIST_4.update({
         curr_stu_puddle: firebase.firestore.FieldValue.arrayRemove(currStu)
       });
       $("#nextStudent").show();
@@ -152,7 +152,7 @@ function fileIncorrect(){
 }
 
 function fileAbsent(){
-  STU_LIST_3.get().then(function(doc){
+  STU_LIST_4.get().then(function(doc){
     if(doc.exists && doc.data().curr_stu_puddle.length == 1){
       let currStu = doc.data().curr_stu_puddle[0];//get current student
       let scoreLst = currStu.score;//get their score structure
@@ -164,18 +164,18 @@ function fileAbsent(){
       lst.push(currStu);
 
 
-      STU_LIST_3.update({//update puddle in current list
+      STU_LIST_4.update({//update puddle in current list
         "curr_stu_puddle": lst
       });
 
       //put into to_ask_pool, because they will have to be asked again if they are absent
 
       //this logic needs to be redesigned
-      STU_LIST_3.update({
+      STU_LIST_4.update({
         been_asked_pool: firebase.firestore.FieldValue.arrayUnion(currStu)
       });
 
-      STU_LIST_3.update({
+      STU_LIST_4.update({
         curr_stu_puddle: firebase.firestore.FieldValue.arrayRemove(currStu)
       });
       $("#nextStudent").show();
@@ -189,7 +189,7 @@ function fileAbsent(){
 }
 
 function resetScores(){
-  STU_LIST_3.get().then(function(doc){
+  STU_LIST_4.get().then(function(doc){
     if(doc.exists){
       let beenAsked = doc.data().been_asked_pool;
       let newBeenAskedLst = [];
@@ -203,7 +203,7 @@ function resetScores(){
         console.log(currStu);
         newBeenAskedLst.push(currStu);
       }
-      STU_LIST_3.update({//update puddle in current list
+      STU_LIST_4.update({//update puddle in current list
         "been_asked_pool": newBeenAskedLst
       });
       let toAsk = doc.data().to_ask_pool;
@@ -218,7 +218,7 @@ function resetScores(){
         console.log(currStu);
         newToAsk.push(currStu);
 
-        STU_LIST_3.update({//update puddle in current list
+        STU_LIST_4.update({//update puddle in current list
           "to_ask_pool": newToAsk
         });
       }
@@ -235,7 +235,7 @@ function resetScores(){
         console.log(currStu);
         newCurr_stu_puddle.push(currStu);
 
-        STU_LIST_3.update({//update puddle in current list
+        STU_LIST_4.update({//update puddle in current list
           "curr_stu_puddle": newCurr_stu_puddle
         });
       }
@@ -246,14 +246,14 @@ function resetScores(){
 }
 
 function close(){
-  STU_LIST_3.get().then(function(doc){
+  STU_LIST_4.get().then(function(doc){
     if(doc.exists && doc.data().curr_stu_puddle.length > 0){
       let currStu = doc.data().curr_stu_puddle[0];
-      STU_LIST_3.update({
+      STU_LIST_4.update({
         to_ask_pool: firebase.firestore.FieldValue.arrayUnion(currStu)
       });
 
-      STU_LIST_3.update({
+      STU_LIST_4.update({
         curr_stu_puddle: firebase.firestore.FieldValue.arrayRemove(currStu)
       });
     }

@@ -4,17 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Add Student</title>
+  <title>Random Students</title>
+
+
   <script
     src="https://code.jquery.com/jquery-3.4.1.min.js"
     integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
     crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
   <!-- The core Firebase JS SDK is always required and must be listed first -->
   <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
 
   <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-firestore.js"></script>
+
   <script>
     // Your web app's Firebase configuration
     var firebaseConfig = {
@@ -32,20 +36,49 @@
     let fire = firebase.firestore();
   </script>
 
-
 </head>
 <body>
-  <form>
-    <div class="form-group">
-      <label for="nameInput">Student Name</label>
-      <input type="text" class="form-control" id="nameInput">
-      <label for="picSrcInput">Pic Source</label>
-      <input type="text" class="form-control" id="picSrcInput">
 
-      <button type="button" id="add3" class="btn btn-secondary" value="Add Students">Add to 3A</button>
-      <button type="button" id="add4" class="btn btn-secondary" value="Add Students">Add to 4A</button>
+
+
+
+  <h1 id = "stuName"></h1>
+    <img id="stuPic" src="">
+
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <button type="button" id="correct" class="btn btn-secondary" >Correct Answer</button>
+    </div>
+      <div class="col">
+        <button type="button" id="wrong" class="btn btn-secondary">Incorrect Answer</button>
       </div>
-    </form>
-<script src="add.js" defer></script>
+      <div class="col">
+        <button type="button" id="question" class="btn btn-secondary">Question</button>
+      </div>
+      <div class="col">
+        <button type="button" id="absent" class="btn btn-secondary">Absent</button>
+      </div>
+      <div class="col">
+        <button type="button" id="reset" class="btn btn-secondary">Reset Scores</button>
+      </div>
+  </div>
+  <br>
+  <div class="row">
+    <div class = "col">
+    <button style="background-color:red" type="button" id="nextStudent" class="btn btn-secondary" >Next Student</button>
+  </div>
+
+  <div class = "col">
+  <button style="background-color:green" type="button" id="close" class="btn btn-secondary" >Close</button>
+</div>
+  </div>
+</div>
+
+
+
+
+
+  <script src="4.js" defer></script>
 </body>
 </html>
