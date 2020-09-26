@@ -1,0 +1,12 @@
+.jumbotron {
+  background-color: #000000;
+  background-image: linear-gradient(to bottom right, #54aae8, #84e364);
+}
+
+body {
+  background-image: url("bg.png")
+}
+
+.btn {
+  background-image: linear-gradient(to bottom right, #60bfb3, #db5365);
+}
