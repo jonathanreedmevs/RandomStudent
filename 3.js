@@ -5,17 +5,17 @@ function getRandomInt(max) {
 const STU_LIST_3 = fire.collection("3A Students").doc("Student Lists");
 const Q_GIF = "https://media.giphy.com/media/uHEqSttWHv476/giphy.gif";
 
-function getNextStudent(){
-  STU_LIST_3.get().then(function(doc) {//Asynchronous Javascript to Read from Database
-    if(doc.exists){
+function getNextStudent() {
+  STU_LIST_3.get().then(function(doc) { //Asynchronous Javascript to Read from Database
+    if (doc.exists) {
       //Get references to the list pools of who to call
       let beenAsked = doc.data().been_asked_pool;
       let toAsk = doc.data().to_ask_pool;
       //get the next student
-      if(toAsk.length == 0){
+      if (toAsk.length == 0) {
         //Take every kid out of beenAsked and put them in to_ask_pool
         alert("Everyone's been asked!");
-        for (let i = 0; i < beenAsked.length; i++){
+        for (let i = 0; i < beenAsked.length; i++) {
           //get kid out of beenAsked
           STU_LIST_3.update({
             been_asked_pool: firebase.firestore.FieldValue.arrayRemove(beenAsked[i])
@@ -26,8 +26,7 @@ function getNextStudent(){
           });
         }
 
-      }
-      else{
+      } else {
         let nextStudent = toAsk[getRandomInt(toAsk.length)];
         console.log(nextStudent);
 
@@ -50,13 +49,12 @@ function getNextStudent(){
         });
 
         $("#nextStudent").hide();
-}
-    }
-    else{
+      }
+    } else {
       console.log("Doc Doesn't Exist!");
     }
   }).catch(function(error) {
-      console.log("Error getting document:", error);
+    console.log("Error getting document:", error);
   });
 
 }
@@ -80,20 +78,20 @@ file absent count and return to to_ask_pool
 /**
 Get student from the curr_stu_puddle and update numbers
 */
-function fileCorrect(){
-  STU_LIST_3.get().then(function(doc){
-    if(doc.exists && doc.data().curr_stu_puddle.length == 1){
-      let currStu = doc.data().curr_stu_puddle[0];//get current student
-      let scoreLst = currStu.score;//get their score structure
-      scoreLst[0]++;//increment correct
-      scoreLst[3]++;//increment questions asked
-      currStu.score = scoreLst;//reassign updated list
-      let lst = []//push student
+function fileCorrect() {
+  STU_LIST_3.get().then(function(doc) {
+    if (doc.exists && doc.data().curr_stu_puddle.length == 1) {
+      let currStu = doc.data().curr_stu_puddle[0]; //get current student
+      let scoreLst = currStu.score; //get their score structure
+      scoreLst[0]++; //increment correct
+      scoreLst[3]++; //increment questions asked
+      currStu.score = scoreLst; //reassign updated list
+      let lst = [] //push student
       console.log(currStu);
       lst.push(currStu);
 
 
-      STU_LIST_3.update({//update puddle in current list
+      STU_LIST_3.update({ //update puddle in current list
         "curr_stu_puddle": lst
       });
 
@@ -109,27 +107,26 @@ function fileCorrect(){
       $("#nextStudent").show();
       $("#stuName").html("");
       $("#stuPic").attr("src", Q_GIF);
-    }
-    else{
+    } else {
       console.log("Sucks, no file dude.")
     }
   })
 }
 
-function fileIncorrect(){
-  STU_LIST_3.get().then(function(doc){
-    if(doc.exists && doc.data().curr_stu_puddle.length == 1){
-      let currStu = doc.data().curr_stu_puddle[0];//get current student
-      let scoreLst = currStu.score;//get their score structure
-      scoreLst[1]--;//decrement incorrect
-      scoreLst[3]++;//increment questions asked
-      currStu.score = scoreLst;//reassign updated list
-      let lst = []//push student
+function fileIncorrect() {
+  STU_LIST_3.get().then(function(doc) {
+    if (doc.exists && doc.data().curr_stu_puddle.length == 1) {
+      let currStu = doc.data().curr_stu_puddle[0]; //get current student
+      let scoreLst = currStu.score; //get their score structure
+      scoreLst[1]--; //decrement incorrect
+      scoreLst[3]++; //increment questions asked
+      currStu.score = scoreLst; //reassign updated list
+      let lst = [] //push student
       console.log(currStu);
       lst.push(currStu);
 
 
-      STU_LIST_3.update({//update puddle in current list
+      STU_LIST_3.update({ //update puddle in current list
         "curr_stu_puddle": lst
       });
 
@@ -144,27 +141,26 @@ function fileIncorrect(){
       $("#nextStudent").show();
       $("#stuName").html("");
       $("#stuPic").attr("src", Q_GIF);
-    }
-    else{
+    } else {
       console.log("Sucks, no file dude.")
     }
   })
 }
 
-function fileAbsent(){
-  STU_LIST_3.get().then(function(doc){
-    if(doc.exists && doc.data().curr_stu_puddle.length == 1){
-      let currStu = doc.data().curr_stu_puddle[0];//get current student
-      let scoreLst = currStu.score;//get their score structure
-      scoreLst[2]--;//decrement absent
+function fileAbsent() {
+  STU_LIST_3.get().then(function(doc) {
+    if (doc.exists && doc.data().curr_stu_puddle.length == 1) {
+      let currStu = doc.data().curr_stu_puddle[0]; //get current student
+      let scoreLst = currStu.score; //get their score structure
+      scoreLst[2]--; //decrement absent
       //DON'T INCREMENT QUESTIONS ASKED BECAUSE THERE WAS NO QUESTION ASKED
-      currStu.score = scoreLst;//reassign updated list
-      let lst = []//push student
+      currStu.score = scoreLst; //reassign updated list
+      let lst = [] //push student
       console.log(currStu);
       lst.push(currStu);
 
 
-      STU_LIST_3.update({//update puddle in current list
+      STU_LIST_3.update({ //update puddle in current list
         "curr_stu_puddle": lst
       });
 
@@ -181,73 +177,72 @@ function fileAbsent(){
       $("#nextStudent").show();
       $("#stuName").html("");
       $("#stuPic").attr("src", Q_GIF);
-    }
-    else{
+    } else {
       console.log("Sucks, no file dude.")
     }
   })
 }
 
-function resetScores(){
-  STU_LIST_3.get().then(function(doc){
-    if(doc.exists){
+function resetScores() {
+  STU_LIST_3.get().then(function(doc) {
+    if (doc.exists) {
       let beenAsked = doc.data().been_asked_pool;
       let newBeenAskedLst = [];
-      for(let i = 0; i < beenAsked.length; i++){
-        let currStu = beenAsked[i];//get current student
-        let scoreLst = currStu.score;//get their score structure
-        for(let j = 0; j < scoreLst.length; j++){
+      for (let i = 0; i < beenAsked.length; i++) {
+        let currStu = beenAsked[i]; //get current student
+        let scoreLst = currStu.score; //get their score structure
+        for (let j = 0; j < scoreLst.length; j++) {
           scoreLst[j] = 0;
         }
-        currStu.score = scoreLst;//reassign updated list
+        currStu.score = scoreLst; //reassign updated list
         console.log(currStu);
         newBeenAskedLst.push(currStu);
       }
-      STU_LIST_3.update({//update puddle in current list
+      STU_LIST_3.update({ //update puddle in current list
         "been_asked_pool": newBeenAskedLst
       });
       let toAsk = doc.data().to_ask_pool;
       let newToAsk = [];
-      for(let i = 0; i < toAsk.length; i++){
-        let currStu = toAsk[i];//get current student
-        let scoreLst = currStu.score;//get their score structure
-        for(let j = 0; j < scoreLst.length; j++){
+      for (let i = 0; i < toAsk.length; i++) {
+        let currStu = toAsk[i]; //get current student
+        let scoreLst = currStu.score; //get their score structure
+        for (let j = 0; j < scoreLst.length; j++) {
           scoreLst[j] = 0;
         }
-        currStu.score = scoreLst;//reassign updated list
+        currStu.score = scoreLst; //reassign updated list
         console.log(currStu);
         newToAsk.push(currStu);
 
-        STU_LIST_3.update({//update puddle in current list
+        STU_LIST_3.update({ //update puddle in current list
           "to_ask_pool": newToAsk
         });
       }
 
       let curr_stu_puddle = doc.data().curr_stu_puddle;
       let newCurr_stu_puddle = [];
-      for(let i = 0; i < curr_stu_puddle.length; i++){
-        let currStu = curr_stu_puddle[i];//get current student
-        let scoreLst = currStu.score;//get their score structure
-        for(let j = 0; j < scoreLst.length; j++){
+      for (let i = 0; i < curr_stu_puddle.length; i++) {
+        let currStu = curr_stu_puddle[i]; //get current student
+        let scoreLst = currStu.score; //get their score structure
+        for (let j = 0; j < scoreLst.length; j++) {
           scoreLst[j] = 0;
         }
-        currStu.score = scoreLst;//reassign updated list
+        currStu.score = scoreLst; //reassign updated list
         console.log(currStu);
         newCurr_stu_puddle.push(currStu);
 
-        STU_LIST_3.update({//update puddle in current list
+        STU_LIST_3.update({ //update puddle in current list
           "curr_stu_puddle": newCurr_stu_puddle
         });
       }
-    }else{
+    } else {
       console.log("Sucks, no file dude.")
     }
   })
 }
 
-function close(){
-  STU_LIST_3.get().then(function(doc){
-    if(doc.exists && doc.data().curr_stu_puddle.length > 0){
+function close() {
+  STU_LIST_3.get().then(function(doc) {
+    if (doc.exists && doc.data().curr_stu_puddle.length > 0) {
       let currStu = doc.data().curr_stu_puddle[0];
       STU_LIST_3.update({
         to_ask_pool: firebase.firestore.FieldValue.arrayUnion(currStu)
@@ -257,7 +252,7 @@ function close(){
         curr_stu_puddle: firebase.firestore.FieldValue.arrayRemove(currStu)
       });
     }
-    window.location.href = window.location.href = "/Users/jonathanmevs/Documents/GitHub/RandomStudent/index.html";
+    window.location.href = "https://jonathanreedmevs.github.io/RandomStudent/";
   });
 
 
