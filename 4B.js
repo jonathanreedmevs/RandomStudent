@@ -252,7 +252,7 @@ function close() {
         curr_stu_puddle: firebase.firestore.FieldValue.arrayRemove(currStu)
       });
     }
-    window.location.href = window.location.href = "/Users/jonathanmevs/Documents/GitHub/RandomStudent/index.html";
+    window.location.href = "https://jonathanreedmevs.github.io/RandomStudent/";
   });
 
 
